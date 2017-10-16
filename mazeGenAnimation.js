@@ -10,29 +10,64 @@ let stack = [];
 function setup() {
     createCanvas(500,500);
     maze = new Graph(rows * cols);
-    createMaze();
     currentVertex = 0;
     maze.visited[currentVertex] = true;
 }
 
-function createMaze() {
-    for(var i = 0; i < rows; i++) {
-        for(var j = 0; j < cols; j++) {
-            let current = getIndex(i,j);
-            let top = getIndex(i-1, j);
-            if (top != -1)
-                maze.addEdge(current, top);
-            let right = getIndex(i, j + 1);
-            if (right != -1)
-                maze.addEdge(current, right);
-            let bottom = getIndex(i+1, j);
-            if (bottom != -1)
-                maze.addEdge(current, bottom);
-            let left = getIndex(i, j-1);
-            if (left != -1)
-                maze.addEdge(current, left);
+
+
+
+function draw() {
+    background(51);
+    drawMaze();
+    
+    if (!maze.visited.includes(false)) {
+        
+        noLoop();
+        print("DONE");
+        return;
+    }
+
+    let neighbours = getNeighbours(currentVertex);
+    let unvisited = [];
+    for (var i = 0; i < neighbours.length; i++) {
+        if (maze.visited[neighbours[i]] == false) {
+            unvisited.push(neighbours[i]);
         }
     }
+    if (unvisited.length > 0) {
+        let randomNeighbour = unvisited[floor(random(unvisited.length))];
+        stack.push(currentVertex);
+        
+        maze.addEdge(currentVertex, randomNeighbour);
+        maze.addEdge(randomNeighbour, currentVertex);
+
+        currentVertex = randomNeighbour;
+        maze.visited[randomNeighbour] = true;
+    } else if (stack.length > 0) {
+        currentVertex = stack.pop();
+    }
+}
+
+function getNeighbours(v) {
+    const vIndex = getPosition(v);
+    let i = vIndex[0];
+    let j = vIndex[1];
+    let neighbours = [];
+    const top = getIndex(i -1, j);
+    if (top != -1)
+        neighbours.push(top);
+    const right = getIndex(i, j + 1);
+    if (right != -1)
+        neighbours.push(right);
+    const bottom = getIndex(i+1, j);
+    if (bottom != -1)
+        neighbours.push(bottom);
+    const left = getIndex(i, j-1);
+    if (left != -1)
+        neighbours.push(left);
+    
+    return neighbours;
 }
 
 function getIndex(i, j) {
@@ -41,39 +76,15 @@ function getIndex(i, j) {
     return i * cols + j;
 }
 
-function draw() {
-    background(51);
-    drawMaze();
-
-    if (!maze.visited.includes(false)) {
-        
-        noLoop();
-        print("DONE");
-        return;
-    }
-
-    let neighbours = maze.adj[currentVertex];
-    let hasUnvisited = false;
-    for (var i = 0; i < neighbours.length; i++) {
-        var element = neighbours[i];
-        if (!maze.visited[neighbours[i]]) {
-            hasUnvisited = true;
-        }
-    }
-    if (hasUnvisited) {
-        let randomNeighbour = neighbours[floor(random(neighbours.length))];
-        stack.push(currentVertex);
-        // remove connection between neighbour and current
-        let index = maze.adj[currentVertex].indexOf(randomNeighbour);
-        maze.adj[currentVertex].splice(index, 1);
-        index = maze.adj[randomNeighbour].indexOf(currentVertex);
-        maze.adj[randomNeighbour].splice(index, 1);
-
-        currentVertex = randomNeighbour;
-        maze.visited[randomNeighbour] = true;
-    } else if (stack.length > 0) {
-        currentVertex = stack.pop();
-    }
+function getPosition(v) {
+    let index = new Array(2);
+    if (v < 0 || v > maze.V) 
+        return index.fill(-1);
+    let row = floor(v / cols);
+    let col = v % cols;
+    index[0] = row;
+    index[1] = col;
+    return index;  
 }
 
 function drawMaze() {
@@ -95,16 +106,16 @@ function drawMaze() {
 }
 
 function square(v, x, y, len) {
-    if (hasANeighbour("top", v)) {
+    if (!hasANeighbour("top", v)) {
         line(x, y, x + len, y);
     }
-    if (hasANeighbour("right", v)) {
+    if (!hasANeighbour("right", v)) {
         line(x + len, y, x + len, y + len);
     }
-    if (hasANeighbour("bottom", v)) {
+    if (!hasANeighbour("bottom", v)) {
         line(x + len, y + len, x, y + len);
     }
-    if (hasANeighbour("letf")) {
+    if (!hasANeighbour("left", v)) {
         line(x, y + len, x, y);
     }
 
