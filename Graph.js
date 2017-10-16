@@ -1,5 +1,7 @@
-// A di-graph class that stores a graph as an adjacency list.
-// The nodes are 'labeled' 0 - V-1.
+/** 
+* A di-graph class that stores a graph as an adjacency list.
+* The nodes are 'labeled' 0 - V-1.
+*/
 class Graph {
     constructor(V) {
         this.V = V;
