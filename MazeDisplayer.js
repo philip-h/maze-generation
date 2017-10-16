@@ -3,7 +3,7 @@
  */
 class MazeDisplayer {
 
-    static drawMaze(maze, screenSize, cellSize) {
+    static drawMaze(maze, screenSize, cellSize, curr) {
         stroke(255);
         strokeWeight(2);
         noFill();
@@ -28,10 +28,17 @@ class MazeDisplayer {
             }
 
             if (maze.visited[v]) {
-                print(v);
                 push();
                 noStroke();
                 fill(255,0,255,50);
+                rect(x, y, cellSize, cellSize);
+                pop();
+            }
+
+            if (v == curr) {
+                push();
+                noStroke();
+                fill(0,255,0,50);
                 rect(x, y, cellSize, cellSize);
                 pop();
             }

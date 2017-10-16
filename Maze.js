@@ -17,6 +17,15 @@ class Maze extends Graph {
         this.stack = [];
     }
 
+    dfs(v) {
+        this.visited[v] = true;
+        for (var w = 0; w < this.adj[v].length; w++) {
+            var adj = this.adj[v][w];
+            if (this.visited[adj] == false)
+                this.dfs(adj);
+        }
+    }
+
     _DFSBacktracking() {
         let currentVertex = 0;
         this.visited[currentVertex] = true;
