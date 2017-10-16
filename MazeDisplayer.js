@@ -38,7 +38,7 @@ class MazeDisplayer {
             if (v == curr) {
                 push();
                 noStroke();
-                fill(0,255,0,50);
+                fill(0,255,0);
                 rect(x, y, cellSize, cellSize);
                 pop();
             }

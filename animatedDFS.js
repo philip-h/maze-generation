@@ -1,12 +1,14 @@
 let maze;
-let rows = 30, cols = 30;
+let rows = 20, cols = 20;
 let currentVertex;
+let x;
 function setup() {
-    createCanvas(300,300);
+    createCanvas(500,500);
     maze = new Maze(rows,cols);
     maze.generateMaze();
     currentVertex = 0;
     maze.visited[currentVertex] = true;
+    x = 399;
 }
 
 function draw() {

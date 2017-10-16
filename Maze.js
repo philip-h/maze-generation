@@ -7,8 +7,10 @@ class Maze extends Graph {
         this.rows = rows;
         this.cols = cols;
         
-        /* For DFS Maze Generation */
+        /* For DFS Stuff! */
         this.stack = [];
+
+        this.edgeTo = new Array(this.V);
     }
 
     generateMaze() {
@@ -21,9 +23,45 @@ class Maze extends Graph {
         this.visited[v] = true;
         for (var w = 0; w < this.adj[v].length; w++) {
             var adj = this.adj[v][w];
-            if (this.visited[adj] == false)
-                this.dfs(adj);
+            if (this.visited[adj] == false) {
+                this.edgeTo[adj] = v;
+                this.dfs(adj)
+            }
         }
+    }
+
+    bfs(v) {
+        let queue = [];
+        this.visited[v] = true;
+        queue.unshift(v);
+        while (queue.length > 0) {
+            var next = queue.pop();
+            
+            for (var w = 0; w < this.adj[next].length; w++) {
+                var adj = this.adj[next][w];
+                if (this.visited[adj] == false) {
+                    this.edgeTo[adj] = next;
+                    this.visited[adj] = true;
+                    queue.unshift(adj);
+                }
+            }
+
+        }
+        
+    }
+
+    pathTo(v) {
+        if (!this.visited[v])
+        {
+            return null;
+        }
+        
+        let path = [];
+        for(var x = v; x != 0; x = this.edgeTo[x]) {
+            path.push(x);
+        }
+        path.push(0);
+        return path;
     }
 
     _DFSBacktracking() {

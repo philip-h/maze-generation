@@ -5,8 +5,9 @@
 class Graph {
     constructor(V) {
         this.V = V;
-        this.adj = new Array(this.V);
         this.visited = new Array(this.V).fill(false);
+
+        this.adj = new Array(this.V);
         for (var v = 0; v < this.V; v++) {
             this.adj[v] = [];
         }
