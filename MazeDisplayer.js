@@ -14,17 +14,26 @@ class MazeDisplayer {
 
         for (var v = 0; v < maze.V; v++) {
             // Draw a square, excluding lines between neighbours
-            if (this._hasANeighbour(maze, "top", v)) {
+            if (!this._hasANeighbour(maze, "top", v)) {
                 line(x, y, x + cellSize, y);
             }
-            if (this._hasANeighbour(maze, "right", v)) {
+            if (!this._hasANeighbour(maze, "right", v)) {
                 line(x + cellSize, y, x + cellSize, y + cellSize);
             }
-            if (this._hasANeighbour(maze, "bottom", v)) {
+            if (!this._hasANeighbour(maze, "bottom", v)) {
                 line(x + cellSize, y + cellSize, x, y + cellSize);
             }
-            if (this._hasANeighbour(maze, "letf")) {
+            if (!this._hasANeighbour(maze, "left", v)) {
                 line(x, y + cellSize, x, y);
+            }
+
+            if (maze.visited[v]) {
+                print(v);
+                push();
+                noStroke();
+                fill(255,0,255,50);
+                rect(x, y, cellSize, cellSize);
+                pop();
             }
 
             x += cellSize;

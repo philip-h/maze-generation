@@ -15,6 +15,7 @@ class Maze extends Graph {
         this._generateBaseMaze();
         this._DFSBacktracking();
         this.visited.fill(false);
+        this.stack = [];
     }
 
     /** 
